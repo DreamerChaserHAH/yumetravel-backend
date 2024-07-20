@@ -1,2 +1,5 @@
 python-dotenv
 fastapi
+llama-index
+llama-index-llms-together
+airportsdata

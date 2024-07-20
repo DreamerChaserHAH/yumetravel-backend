@@ -25,8 +25,16 @@ class YumeTravelResponse:
             "response": self.response
         })
 
+class Message:
+    def __init__(self, role: str, content: str):
+        self.role = role
+        self.content = content
+
+    def to_history(self):
+        return "[" + self.role + "]: " + self.content + "\n"
+
 class Session:
-    def __init__(self, conversation_id: str, messages: list[str]):
+    def __init__(self, conversation_id: str, messages: list[Message]):
         self.conversation_id = conversation_id
         self.messages = messages
         self.websocket_connection = None
@@ -42,6 +50,12 @@ class Session:
         if len(self.messages) > 0:
             return self.messages[-1]
         return ""
+    
+    def get_chat_history(self) -> str:
+        chat_history = ""
+        for message in self.messages:
+            chat_history += message.to_history()
+        return chat_history
 
 class SessionController:
     '''
