@@ -171,13 +171,15 @@ def add_summary_text(conversation_id: str, text: str):
 
 def add_possible_places_text(conversation_id: str, latitude: float, longitude: float):
     '''
-    adds a list of possible activities to do around a particular coordinate
+    This tool is for finding possible activities to do around a particular coordinate which is in latitude and longitude.
+    Before you call this tool ensure you have the following information:
+    city name: The name of the city
+    (or)
+    latitude: This is a float
+    longitude: This is a float as well
 
-    if you don't have the latitude and longitude, possibly convert the city name to the latitude and longitude
-
-    this function adds the list of possible places that the user can visit at a particular destination to the latest message that will be displayed to the user
-
-    Use this function when the user is looking for places to visit at a particular destination, or you think the function is relevant to the summary
+    Important Notes:
+    If you have a city name instead convert it to its latitude and longitude coordinates which are the actual arguments to the tool.
     '''
     current_session = session_manager.session_controller.get_session(conversation_id)
     if current_session == None:
@@ -208,15 +210,15 @@ def add_possible_places_text(conversation_id: str, latitude: float, longitude: f
 
 def add_possible_flights_text(conversation_id: str, originLocationCode: str, destinationLocationCode: str, departureDate: str, adults: int = 1):
     '''
-    Use this tool only when the current summary is relevant to flights
-    make sure you convert city names to their relevant international airport IATA code for this function to work\n
-    adds a list of possible flights to the latest message that will be displayed to the user\n
-    Use other tools to figure out what tools are necessary to get some of those values if they are missing\n
-    parameter summary:\n
-    originLocationCode: the IANA code of the origin location\n
-    destinationLocationCode: the IANA code of the destination location\n
-    departureDate: the date of departure in the format YYYY-MM-DD\n
-    adults: the number of adults
+    This tool is for booking flights.
+    Before you call this tool ensure you have the following information since these are the arguments needed for the tool:
+    originLocationCode: the IATA code of the origin location (this will be a string)\n
+    destinationLocationCode: the IATA code of the destination location (this will be a string)\n
+    departureDate: the date of departure in the format YYYY-MM-DD (this will be a string)\n
+    adults: the number of adults (this will be an integer)
+
+    Important Notes:
+    make sure you convert city names to their relevant international airport IATA code.
     '''
 
     # 1. Search for Available Flights to a particular place and their pricing

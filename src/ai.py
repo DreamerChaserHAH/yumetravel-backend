@@ -62,6 +62,7 @@ async def handle_query(current_session: session_manager.Session, user_query: str
                     Summary:
                     
                     """ + summary_text),
+        ChatMessage(role=MessageRole.USER, content=user_query),
     ]
 
     message_template = ChatPromptTemplate(function_call_msgs)
