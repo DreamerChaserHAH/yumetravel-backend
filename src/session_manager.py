@@ -9,9 +9,9 @@ class YumeConversationResponseTypes(str, Enum):
     ON_RESPONSE = "on_response"
 
 class YumeTravelResponse:
-    def __init__(self, type: YumeConversationResponseTypes, response: str):
+    def __init__(self, type: YumeConversationResponseTypes):
         self.type = type
-        self.response = response
+        self.responses = []
 
     def get_type(self):
         return self.type
@@ -24,19 +24,30 @@ class YumeTravelResponse:
             "type": self.type,
             "response": self.response
         })
+    
 
 class Message:
     def __init__(self, role: str, content: str):
         self.role = role
-        self.content = content
+        self.content = content #the text content of the message
+        self.responses = [] #all the responses packed inside the message
 
     def to_history(self):
         return "[" + self.role + "]: " + self.content + "\n"
+    
+    def to_json(self):
+        return self.responses
+
+class SessionStatus(str, Enum):
+    LOADING = "LOADING"
+    COMPLETED = "COMPLETED"
 
 class Session:
     def __init__(self, conversation_id: str, messages: list[Message]):
         self.conversation_id = conversation_id
         self.messages = messages
+        self.status = SessionStatus.LOADING
+        self.context = ""
         self.websocket_connection = None
 
     def set_websocket_connection(self, websocket_connection: WebSocket):
@@ -48,12 +59,12 @@ class Session:
 
     def get_latest_message(self) -> str:
         if len(self.messages) > 0:
-            return self.messages[-1]
+            return self.messages[-1].to_json()
         return ""
     
     def get_chat_history(self) -> str:
         chat_history = ""
-        for message in self.messages:
+        for message in self.messages[:-1]:
             chat_history += message.to_history()
         return chat_history
 

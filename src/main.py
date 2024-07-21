@@ -40,6 +40,17 @@ async def query(user_query: str, conversation_id: str):
     await ai.handle_query(current_session, user_query=user_query)
     return {"query": user_query}
 
+@app.get("/chat-status")
+async def get_conversation_status(conversation_id: str):
+    '''
+    returns the conversation status (if it is still loading or completed)
+    '''
+    current_session = session_manager.session_controller.get_session(conversation_id)
+    if current_session == None:
+        return {"error": "No such conversation exists"}
+    
+    return current_session.status
+
 @app.websocket("/conversation/{conversation_id}")
 async def conversation_endpoint(websocket: WebSocket, conversation_id: str):
     '''

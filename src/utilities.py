@@ -22,32 +22,32 @@ class SummaryMessage(ConversationalMessageResponse):
         super().__init__(ConversationalMessageResponseType.SUMMARY)
         self.content = summary
     
-    def to_json(self):
-        return json.dumps({
+    def construct(self):
+        return {
             "type": self.type,
             "content": self.content
-        })
+        }
 
 class PossiblePlacesMessage(ConversationalMessageResponse):
-    def __init__(self, places: list[str]):
+    def __init__(self, places: list):
         super().__init__(ConversationalMessageResponseType.POSSIBLE_PLACES)
         self.content = places
     
-    def to_json(self):
-        return {
+    def construct(self):
+        return{
             "type": self.type,
-            "content": list(self.content)
+            "content": self.content
         }
     
 class PossibleFlightsMessage(ConversationalMessageResponse):
-    def __init__(self, flights: list[str]):
+    def __init__(self, flights: list):
         super().__init__(ConversationalMessageResponseType.POSSIBLE_FLIGHTS)
         self.content = flights
     
-    def to_json(self):
+    def construct(self):
         return {
             "type": self.type,
-            "content": list(self.content)
+            "content": self.content
         }
 
 class PossiblePlacesToStayMessage(ConversationalMessageResponse):
