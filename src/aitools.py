@@ -192,7 +192,10 @@ def add_possible_places_text(conversation_id: str, latitude: float, longitude: f
     activities_response = requests.get(amadeus_activities_url, headers=authorization_header, params = search_place_request_params)
     places = []
     print(activities_response.json()["data"])
+    i = 0
     for activity in activities_response.json()["data"]:
+        if i == 3:
+            break
         places.append({
             "Name": activity["name"],
             "Description": activity["description"],
@@ -202,7 +205,7 @@ def add_possible_places_text(conversation_id: str, latitude: float, longitude: f
             "Pictures": activity["pictures"],
             #"Booking Link": activity["bookingLink"]
         })
-    print(places)
+        i += 1
 
     current_session.messages[-1].responses.append(utilities.PossiblePlacesMessage(places).construct())
     # 1. Search for Places to Visit
@@ -245,7 +248,10 @@ def add_possible_flights_text(conversation_id: str, originLocationCode: str, des
     flight_offers_response = requests.get(amadeus_flight_offers_url, headers=authorization_header, params = flight_offers_request_data)
     
     flight_offers = []
+    i = 0
     for flight_offer in flight_offers_response.json()["data"]:
+        if i == 3:
+            break
         flight_offer = {
             "AircraftType": flight_offer["itineraries"][0]["segments"][0]["aircraft"]["code"],
             "Airline": flight_offer["itineraries"][0]["segments"][0]["carrierCode"],
@@ -253,6 +259,7 @@ def add_possible_flights_text(conversation_id: str, originLocationCode: str, des
             "ArrivalTime": flight_offer["itineraries"][0]["segments"][-1]["arrival"]["at"],
             "Price": flight_offer["price"]["total"]
         }
+        i += 1
     flight_offers.append(flight_offer)
 
     current_session.messages[-1].responses.append(utilities.PossibleFlightsMessage(flight_offers).construct())
