@@ -191,7 +191,7 @@ def add_possible_places_text(conversation_id: str, latitude: float, longitude: f
     }
     activities_response = requests.get(amadeus_activities_url, headers=authorization_header, params = search_place_request_params)
     places = []
-    print(activities_response.json()["data"])
+    print(activities_response.json())
     i = 0
     for activity in activities_response.json()["data"]:
         if i == 3:
@@ -249,6 +249,7 @@ def add_possible_flights_text(conversation_id: str, originLocationCode: str, des
     
     flight_offers = []
     i = 0
+    print(flight_offers_response.json())
     for flight_offer in flight_offers_response.json()["data"]:
         if i == 3:
             break
